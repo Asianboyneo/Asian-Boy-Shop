@@ -1,70 +1,350 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>亞洲男孩商店</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>亞洲男孩商店 | ASIAN BOY VISION</title>
+    
+    <!-- Google Fonts: Noto Sans TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'Microsoft JhengHei', 'sans-serif'],
-              mono: ['Fira Code', 'monospace'],
-            },
-            animation: {
-              'fade-in': 'fadeIn 1.5s ease-out forwards',
-              'fade-in-up': 'fadeInUp 1s ease-out forwards',
-            },
-            keyframes: {
-              fadeIn: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              },
-              fadeInUp: {
-                '0%': { opacity: '0', transform: 'translateY(40px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              }
-            }
-          }
-        }
-      }
-    </script>
-    <script type="importmap">
-    {
-      "imports": {
-        "react/": "https://esm.sh/react@^19.2.3/",
-        "react": "https://esm.sh/react@^19.2.3",
-        "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
-        "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
-      }
-    }
-    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
-      html {
-        scroll-behavior: smooth;
-      }
-      body {
-        margin: 0;
-        background-color: #000;
-        color: #fff;
-      }
-      /* Hide scrollbar for Chrome, Safari and Opera */
-      ::-webkit-scrollbar {
-        width: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #000;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #333;
-        border-radius: 3px;
-      }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            overflow-x: hidden;
+            background-color: #fcfcfc; /* Off-white for cleaner look */
+        }
+        
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+
+        /* Video Container */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        #hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.1s ease-out;
+        }
+
+        /* Gradient Overlay for text readability */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.2); /* Slight darkening */
+            z-index: 0;
+        }
+
+        /* Product Card Hover Effect */
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
     </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+</head>
+<body class="text-gray-900">
+
+    <!-- Background Video Wrapper (Fixed Position) -->
+    <div class="video-container">
+        <div class="video-overlay"></div>
+        <video id="hero-video" autoplay muted loop playsinline>
+            <source src="https://res.cloudinary.com/dhnc6dsnl/video/upload/v1765817396/%E7%B6%B2%E9%A0%81%E5%BD%B1%E7%89%87_ffabqj.mp4" type="video/mp4">
+            您的瀏覽器不支援 HTML5 影片。
+        </video>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-6 px-6 md:px-12 flex justify-between items-center text-white mix-blend-difference">
+        <a href="#" class="text-2xl md:text-3xl font-black tracking-tighter uppercase">Asian Boy Vision</a>
+        
+        <div class="hidden md:flex gap-8 font-medium">
+            <a href="#products" class="hover:underline underline-offset-4 decoration-2">商店</a>
+            <a href="#about" class="hover:underline underline-offset-4 decoration-2">關於</a>
+            <a href="#contact" class="hover:underline underline-offset-4 decoration-2">聯絡</a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="md:hidden">
+            <i data-lucide="menu" class="w-8 h-8"></i>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-40 transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center gap-8 text-white">
+        <button id="close-menu-btn" class="absolute top-6 right-6">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <a href="#products" class="text-2xl font-bold mobile-link">商店</a>
+        <a href="#about" class="text-2xl font-bold mobile-link">關於</a>
+        <a href="#contact" class="text-2xl font-bold mobile-link">聯絡</a>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen flex flex-col justify-center items-center text-center px-4">
+        <div class="z-10 text-white animate-fade-in-up">
+            <h1 class="text-5xl md:text-8xl font-black tracking-tight mb-4 uppercase drop-shadow-lg">
+                Asian Boy<br>Vision
+            </h1>
+            <p class="text-lg md:text-2xl font-light tracking-wide mb-8 opacity-90 drop-shadow-md">
+                探索 曼妮 的獨特宇宙
+            </p>
+            <a href="#products" class="inline-block px-8 py-4 bg-white text-black font-bold tracking-widest text-sm hover:bg-gray-200 transition-colors uppercase">
+                立即選購
+            </a>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 animate-bounce text-white">
+            <i data-lucide="arrow-down" class="w-8 h-8"></i>
+        </div>
+    </header>
+
+    <!-- Main Content Wrapper (White Background starts here) -->
+    <div class="relative bg-white z-20 rounded-t-[3rem] mt-[-2rem] shadow-[0_-20px_40px_rgba(0,0,0,0.1)] min-h-screen">
+        
+        <!-- Products Section -->
+        <section id="products" class="py-24 px-6 md:px-12 max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2 block">Collection</span>
+                <h2 class="text-4xl md:text-5xl font-black tracking-tight mb-4 text-gray-900">最新上架</h2>
+                <div class="w-24 h-1 bg-black mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Product 1 -->
+                <div class="product-card group cursor-pointer">
+                    <div class="bg-gray-100 aspect-[4/5] rounded-xl overflow-hidden relative mb-4">
+                        <!-- Placeholder Image - In a real scenario, use actual product photos -->
+                        <div class="w-full h-full bg-slate-200 flex items-center justify-center text-gray-400 group-hover:scale-105 transition-transform duration-500">
+                             <!-- Using SVG placeholder for minimalist look -->
+                             <svg class="w-24 h-24 text-gray-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                        </div>
+                        <div class="absolute top-4 right-4 bg-black text-white text-xs font-bold px-3 py-1 rounded-full">熱銷</div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">曼妮呼嚕款</h3>
+                    <p class="text-sm text-gray-500 mb-3 line-clamp-2">柔軟舒適的觸感，陪伴您每一個寧靜的夜晚，極致放鬆的睡眠體驗。</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-mono font-bold">NT$ 699</span>
+                        <button class="w-10 h-10 rounded-full bg-gray-100 hover:bg-black hover:text-white flex items-center justify-center transition-colors">
+                            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card group cursor-pointer">
+                    <div class="bg-gray-100 aspect-[4/5] rounded-xl overflow-hidden relative mb-4">
+                        <div class="w-full h-full bg-slate-200 flex items-center justify-center text-gray-400 group-hover:scale-105 transition-transform duration-500">
+                             <svg class="w-24 h-24 text-gray-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">曼妮發呆款</h3>
+                    <p class="text-sm text-gray-500 mb-3 line-clamp-2">捕捉放空時的可愛瞬間，療癒系設計，放在桌上瞬間緩解壓力。</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-mono font-bold">NT$ 799</span>
+                        <button class="w-10 h-10 rounded-full bg-gray-100 hover:bg-black hover:text-white flex items-center justify-center transition-colors">
+                            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card group cursor-pointer">
+                    <div class="bg-gray-100 aspect-[4/5] rounded-xl overflow-hidden relative mb-4">
+                        <div class="w-full h-full bg-slate-200 flex items-center justify-center text-gray-400 group-hover:scale-105 transition-transform duration-500">
+                             <svg class="w-24 h-24 text-gray-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                        </div>
+                        <div class="absolute top-4 right-4 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">經典</div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">曼妮經典款</h3>
+                    <p class="text-sm text-gray-500 mb-3 line-clamp-2">最初的感動，最純正的曼妮風格。收藏家必備的原型設計。</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-mono font-bold">NT$ 899</span>
+                        <button class="w-10 h-10 rounded-full bg-gray-100 hover:bg-black hover:text-white flex items-center justify-center transition-colors">
+                            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card group cursor-pointer">
+                    <div class="bg-gray-100 aspect-[4/5] rounded-xl overflow-hidden relative mb-4">
+                        <div class="w-full h-full bg-slate-200 flex items-center justify-center text-gray-400 group-hover:scale-105 transition-transform duration-500">
+                             <svg class="w-24 h-24 text-gray-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                        </div>
+                        <div class="absolute top-4 right-4 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">CP值</div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">曼妮傭人旅行款</h3>
+                    <p class="text-sm text-gray-500 mb-3 line-clamp-2">輕便耐用，專為隨身攜帶設計。無論到哪裡，曼妮隨時待命。</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-mono font-bold">NT$ 200</span>
+                        <button class="w-10 h-10 rounded-full bg-gray-100 hover:bg-black hover:text-white flex items-center justify-center transition-colors">
+                            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- About/Concept Section -->
+        <section id="about" class="py-24 bg-gray-900 text-white">
+            <div class="max-w-4xl mx-auto px-6 text-center">
+                <i data-lucide="stars" class="w-12 h-12 mx-auto mb-6 text-yellow-400"></i>
+                <h2 class="text-3xl md:text-5xl font-black mb-8 uppercase tracking-wide">Asian Boy Universe</h2>
+                <p class="text-lg text-gray-300 leading-relaxed mb-10">
+                    這是一個關於創意、風格與亞洲男孩視野的實驗空間。<br>
+                    從曼妮的日常生活到無限的宇宙想像，我們致力於將獨特的視覺語言轉化為觸手可及的實體。<br>
+                    簡單，卻不簡單。
+                </p>
+                <a href="https://asianboyneo.github.io/Asian_boy_neo/" target="_blank" class="inline-flex items-center gap-2 border border-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition-all">
+                    <span>進入宇宙</span>
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="contact" class="bg-white pt-20 pb-10 px-6 border-t border-gray-100">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+                
+                <!-- Brand -->
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl font-black uppercase tracking-tighter mb-2">Asian Boy Vision</h3>
+                    <a href="mailto:kiwi21501@gmail.com" class="text-gray-500 hover:text-black transition-colors flex items-center justify-center md:justify-start gap-2">
+                        <i data-lucide="mail" class="w-4 h-4"></i>
+                        kiwi21501@gmail.com
+                    </a>
+                </div>
+
+                <!-- Social Links -->
+                <div class="flex gap-6">
+                    <a href="https://www.instagram.com/asian_boy_neo" target="_blank" class="group relative p-3 bg-gray-50 rounded-full hover:bg-pink-500 transition-colors">
+                        <i data-lucide="instagram" class="w-5 h-5 text-gray-700 group-hover:text-white transition-colors"></i>
+                        <span class="sr-only">Instagram</span>
+                    </a>
+                    <a href="https://www.youtube.com/@asian_boy_neo" target="_blank" class="group relative p-3 bg-gray-50 rounded-full hover:bg-red-600 transition-colors">
+                        <i data-lucide="youtube" class="w-5 h-5 text-gray-700 group-hover:text-white transition-colors"></i>
+                        <span class="sr-only">Youtube</span>
+                    </a>
+                    <a href="https://www.threads.com/@asian_boy_neo?hl=zh-tw" target="_blank" class="group relative p-3 bg-gray-50 rounded-full hover:bg-black transition-colors">
+                        <i data-lucide="at-sign" class="w-5 h-5 text-gray-700 group-hover:text-white transition-colors"></i>
+                        <span class="sr-only">Threads</span>
+                    </a>
+                    <a href="https://ko-fi.com/asianboyneo" target="_blank" class="group relative p-3 bg-gray-50 rounded-full hover:bg-blue-400 transition-colors">
+                        <i data-lucide="coffee" class="w-5 h-5 text-gray-700 group-hover:text-white transition-colors"></i>
+                        <span class="sr-only">Ko-fi</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto mt-16 text-center text-xs text-gray-400 font-medium">
+                &copy; 2024 ASIAN BOY VISION. All rights reserved.
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // 1. Progressive Blur Effect
+        const video = document.getElementById('hero-video');
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            
+            // Blur Logic: Calculate blur amount based on scroll
+            // Max blur is 15px when scrolled 80% of window height
+            let blurAmount = (scrollY / (windowHeight * 0.8)) * 15;
+            if (blurAmount > 20) blurAmount = 20; // Cap at 20px
+            
+            video.style.filter = `blur(${blurAmount}px)`;
+            
+            // Navbar Logic
+            if (scrollY > 50) {
+                navbar.classList.add('bg-white/80', 'backdrop-blur-md', 'shadow-sm', 'py-4');
+                navbar.classList.remove('py-6', 'mix-blend-difference', 'text-white');
+                navbar.classList.add('text-black');
+            } else {
+                navbar.classList.remove('bg-white/80', 'backdrop-blur-md', 'shadow-sm', 'py-4', 'text-black');
+                navbar.classList.add('py-6', 'mix-blend-difference', 'text-white');
+            }
+        });
+
+        // 2. Mobile Menu Toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const closeBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            const isHidden = mobileMenu.classList.contains('translate-x-full');
+            if (isHidden) {
+                mobileMenu.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            } else {
+                mobileMenu.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        closeBtn.addEventListener('click', toggleMenu);
+
+        // Close menu when a link is clicked
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // 3. Simple animation on load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Can add more complex entrance animations here if needed
+        });
+    </script>
+</body>
 </html>
