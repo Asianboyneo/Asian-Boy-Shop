@@ -48,7 +48,7 @@ const App: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 border-b border-white/10 pb-6">
-            <h3 className="text-3xl md:text-5xl font-bold tracking-tight text-white">精選系列</h3>
+            <h3 className="text-2xl md:text-4xl font-bold tracking-tight text-white">精選系列</h3>
             <p className="text-gray-500 mt-4 md:mt-0 font-mono text-xs md:text-sm tracking-wider">
               ASIAN BOY VISION / OFFICIAL MERCH
             </p>
