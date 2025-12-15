@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { PRODUCTS } from './constants';
-import BackgroundVideo from './components/BackgroundVideo';
 import ProductCard from './components/ProductCard';
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -14,11 +13,10 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-transparent relative font-sans text-white">
-      <BackgroundVideo />
+    <div className="min-h-screen bg-black relative font-sans text-white">
       <Header />
 
-      {/* Hero Section - Added z-10 to ensure it sits above the video */}
+      {/* Hero Section */}
       <section className="relative z-10 h-screen flex flex-col items-center justify-center px-4">
         <div className="text-center z-10">
           <h2 className="text-4xl md:text-6xl lg:text-8xl font-black text-white tracking-tighter mb-4 animate-fade-in-up drop-shadow-2xl">
