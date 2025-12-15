@@ -1,50 +1,64 @@
 import React from 'react';
 import { SOCIAL_LINKS, CONTACT_EMAIL } from '../constants';
-import { Mail } from 'lucide-react';
+import { Mail, ArrowUpRight } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-black text-white pt-20 pb-10 px-6 border-t border-white/10 relative z-10">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+    <footer className="relative z-10 bg-black pt-24 pb-12 px-6 md:px-12 border-t border-white/10">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-16">
         
-        {/* Contact Section */}
-        <div>
-          <h2 className="text-2xl font-bold mb-6 tracking-tight">聯絡我們</h2>
-          <a 
-            href={`mailto:${CONTACT_EMAIL}`}
-            className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors text-lg"
-          >
-            <Mail size={20} />
-            {CONTACT_EMAIL}
-          </a>
-          <p className="mt-4 text-sm text-gray-500 max-w-md">
-            有關商品詳情、合作邀約或訂單查詢，請直接透過電子郵件與我們聯繫。
-          </p>
+        {/* Brand & Contact */}
+        <div className="flex-1 space-y-8">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-4">
+              ASIAN BOY<br/>VISION
+            </h2>
+            <p className="text-gray-500 max-w-sm font-light">
+              專注於獨特視角與生活美學的亞洲男孩宇宙。
+            </p>
+          </div>
+          
+          <div>
+            <h3 className="text-sm font-mono text-gray-500 mb-2 uppercase tracking-widest">Contact</h3>
+            <a 
+              href={`mailto:${CONTACT_EMAIL}`} 
+              className="text-xl text-white hover:text-gray-300 transition-colors inline-flex items-center gap-2 border-b border-white/20 pb-1"
+            >
+              {CONTACT_EMAIL}
+              <Mail size={16} />
+            </a>
+          </div>
         </div>
 
-        {/* Social Links */}
-        <div>
-          <h2 className="text-2xl font-bold mb-6 tracking-tight">關注 ASIAN BOY</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Links */}
+        <div className="flex-1 md:max-w-sm">
+          <h3 className="text-sm font-mono text-gray-500 mb-6 uppercase tracking-widest">Connect</h3>
+          <ul className="space-y-4">
             {SOCIAL_LINKS.map((link) => (
-              <a
-                key={link.platform}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 p-3 rounded-lg border border-white/10 hover:border-white/50 hover:bg-white/5 transition-all group"
-              >
-                <link.icon size={20} className="text-gray-400 group-hover:text-white" />
-                <span className="text-gray-300 group-hover:text-white font-medium">{link.platform}</span>
-              </a>
+              <li key={link.platform}>
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-between py-3 border-b border-white/10 hover:border-white/50 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <link.icon size={20} className="text-gray-400 group-hover:text-white transition-colors" />
+                    <span className="text-lg text-gray-300 group-hover:text-white font-medium transition-colors">
+                      {link.platform}
+                    </span>
+                  </div>
+                  <ArrowUpRight size={16} className="text-gray-600 group-hover:text-white transition-colors transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
 
-      <div className="mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600 uppercase tracking-widest">
-        <p>&copy; {new Date().getFullYear()} ASIAN BOY VISION. ALL RIGHTS RESERVED.</p>
-        <p className="mt-2 md:mt-0">DESIGNED FOR MANNY LOVERS</p>
+      <div className="mt-24 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-700 uppercase tracking-widest font-mono">
+        <p>© 2025 ASIAN BOY VISION. All rights reserved.</p>
+        <p className="mt-2 md:mt-0">Designed for Visionaries</p>
       </div>
     </footer>
   );

@@ -1,14 +1,14 @@
 export interface Product {
-  id: number;
+  id: string;
   name: string;
-  price: number;
+  price: string;
   description: string;
-  features: string[];
-  imageUrl: string;
+  imageUrl: string; // We will use placeholders since no product images provided
 }
 
 export interface SocialLink {
   platform: string;
   url: string;
-  icon: React.ComponentType<any>;
+  icon: any; // Lucide icon component
+  label: string;
 }

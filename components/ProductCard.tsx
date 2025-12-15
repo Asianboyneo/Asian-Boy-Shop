@@ -1,60 +1,54 @@
 import React from 'react';
 import { Product } from '../types';
-import { ShoppingBag } from 'lucide-react';
 import { CONTACT_EMAIL } from '../constants';
+import { ShoppingBag } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
+  index: number;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, index }) => {
   const handleBuyClick = () => {
-    const subject = encodeURIComponent(`購買查詢：${product.name}`);
-    const body = encodeURIComponent(`你好，我有興趣購買 ${product.name} (價格: ${product.price} TWD)。請提供購買詳情。`);
+    const subject = encodeURIComponent(`[購買] ${product.name}`);
+    const body = encodeURIComponent(`你好，我想購買：\n\n商品：${product.name}\n價格：${product.price} TWD\n\n請告知匯款資訊與後續步驟。`);
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
   };
 
   return (
-    <div className="group relative bg-white/5 backdrop-blur-sm border border-white/10 overflow-hidden rounded-xl hover:border-white/30 transition-all duration-500 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+    <div 
+      className="group relative flex flex-col gap-5 animate-fade-in-up" 
+      style={{ animationDelay: `${index * 150}ms` }}
+    >
       {/* Image Container */}
-      <div className="aspect-square w-full overflow-hidden relative">
+      <div 
+        className="relative w-full aspect-[3/4] overflow-hidden bg-gray-900 cursor-pointer" 
+        onClick={handleBuyClick}
+      >
         <img
           src={product.imageUrl}
           alt={product.name}
-          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out grayscale group-hover:grayscale-0"
+          className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110 opacity-80 group-hover:opacity-100 grayscale-[30%] group-hover:grayscale-0"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
         
-        <div className="absolute bottom-4 left-4">
-          <p className="text-white text-lg font-bold tracking-widest">{product.price} TWD</p>
+        {/* Hover Overlay */}
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center backdrop-blur-[2px]">
+          <div className="border border-white/80 px-8 py-3 flex items-center gap-2 text-white hover:bg-white hover:text-black transition-colors duration-300">
+            <ShoppingBag size={16} />
+            <span className="text-sm tracking-[0.2em] font-light uppercase">Order Now</span>
+          </div>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-white mb-2">{product.name}</h3>
-        <p className="text-gray-300 text-sm mb-4 leading-relaxed min-h-[40px]">
+      {/* Info */}
+      <div className="flex flex-col gap-2">
+        <div className="flex justify-between items-start border-l-2 border-white/0 group-hover:border-white/50 pl-0 group-hover:pl-4 transition-all duration-300">
+          <h3 className="text-lg font-bold text-white tracking-wider">{product.name}</h3>
+          <span className="text-lg font-mono text-gray-300 whitespace-nowrap">{product.price} TWD</span>
+        </div>
+        <p className="text-xs text-gray-500 font-light leading-relaxed group-hover:text-gray-400 transition-colors pl-0 group-hover:pl-4 duration-300">
           {product.description}
         </p>
-        
-        <div className="mb-6">
-          <ul className="space-y-1">
-            {product.features.map((feature, idx) => (
-              <li key={idx} className="text-xs text-gray-400 flex items-center">
-                <span className="w-1 h-1 bg-white rounded-full mr-2"></span>
-                {feature}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <button 
-          onClick={handleBuyClick}
-          className="w-full py-3 px-4 bg-white text-black font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors rounded"
-        >
-          <ShoppingBag size={16} />
-          購買詢問
-        </button>
       </div>
     </div>
   );

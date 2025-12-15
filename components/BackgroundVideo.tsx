@@ -3,54 +3,43 @@ import { HERO_VIDEO_URL } from '../constants';
 
 const BackgroundVideo: React.FC = () => {
   const [blurAmount, setBlurAmount] = useState(0);
-  const requestRef = useRef<number | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (requestRef.current) return;
-
-      requestRef.current = requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        const windowHeight = window.innerHeight;
-        
-        // Calculate blur: starts at 0, increases as you scroll down
-        // Max blur of 20px reached when scrolling 1 window height
-        const maxBlur = 20;
-        const calculatedBlur = Math.min(maxBlur, (scrollY / windowHeight) * maxBlur);
-        
-        setBlurAmount(calculatedBlur);
-        requestRef.current = null;
-      });
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      
+      // Blur logic: Starts blurring immediately as you scroll.
+      // Max blur 40px when you scroll past 100% of the viewport.
+      const maxBlur = 40;
+      const blur = Math.min(maxBlur, (scrollY / (windowHeight * 0.8)) * maxBlur);
+      
+      setBlurAmount(blur);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (requestRef.current) {
-        cancelAnimationFrame(requestRef.current);
-      }
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full overflow-hidden z-0 bg-black">
+    <div className="fixed top-0 left-0 w-full h-screen overflow-hidden -z-10 bg-black">
       <video
-        key={HERO_VIDEO_URL}
+        ref={videoRef}
         src={HERO_VIDEO_URL}
         autoPlay
         loop
         muted
         playsInline
-        preload="auto"
-        className="absolute top-1/2 left-1/2 min-w-full min-h-full object-cover transform -translate-x-1/2 -translate-y-1/2"
-        style={{ 
+        className="w-full h-full object-cover opacity-80"
+        style={{
           filter: `blur(${blurAmount}px)`,
-          transition: 'filter 0.1s linear',
-          willChange: 'filter'
+          transform: 'scale(1.05)', // Prevent white edges during blur
+          transition: 'filter 0.1s ease-out'
         }}
       />
-      {/* Light overlay to ensure text is readable but video is clearly visible */}
-      <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+      {/* Cinematic overlay */}
+      <div className="absolute inset-0 bg-black/30 bg-gradient-to-b from-black/10 via-transparent to-black/80" />
     </div>
   );
 };
